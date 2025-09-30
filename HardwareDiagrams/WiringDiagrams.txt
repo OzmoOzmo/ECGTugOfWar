@@ -1,0 +1,47 @@
+Wiring directions
+
+Requirments:
+An ESP32 - must be S3 or WROVER (Dual Core devices) - Not S2 or C3 which are single core
+A 5v 2A or higher power source
+2 Mind Flex headsets - bought second hand on Ebay - about $40 for a pair - just the headsets needed
+2x 2 meter lengths of Cable - I used a shielded cable from CCTV systems 
+     - they have Red(+ power), Yellow (Tx from headset), Shield (Gnd)
+     - shielded means we can have a longer cable without interferrence
+WRGB Led strip - 144 leds in about 1 meter
+     - note mine was a very dense 144 leds (this is set in the #define NUM_LEDS	144)
+     - note also mine was wrgb - not rgb - there was white as well as rgb
+
+
+1) Power - 
+    Power the ESP32 with +5V and GND - you can use the 5V pin on the ESP32 to power the ESP.
+
+2) Connect two cables to the headsets (A and B) 
+* Serial to GPIO 16 and 17 - Note only TX on each headset is used
+   - it is connected to RX pins (16 & 17) on ESP32
+   - UART1_RX_PIN = GPIO16  
+   - UART2_RX_PIN = GPIO17
+   (note these pins will be 3.3v - same as headset - so not voltage conversion needed)
+
+* GND is connected to ESP32 GND
+* Power is connected from the point the red wire enters the main circuit board  on the headsets to the ESP +5V
+  Note - the battery is 4.5 volts - so a diode can be wired in series with the 5V from the esp to drop 0.7 volts.
+  This will result in the headsets not heating up.
+
+
+3) FastLED (WS2812 / SK6812 style)
+ - Config names (from project):
+    - FASTLED_DATA_PIN = GPIO19
+    - LED strip GND -> MCU GND
+    - LED strip +5V (Vcc) -> +5V from supply
+    - Place a 1000 µF electrolytic capacitor across LED PSU +5V and GND at the strip input.
+
+4) Sound (Optional - but recommended)
+    connect this pin to an audio amplifier and speaker
+    - DAC_AUDIO_PIN = GPIO25
+
+5) Strength Meters (Optional)
+  I had a meter that could display two voltage levels - I used it to display the brains strength (attention level)
+  - Analog / PWM outputs (meters, indicators)
+    - Strength Meter A = GPIO13 (PWM)
+    - Strength Meter B = GPIO12 (PWM)
+
